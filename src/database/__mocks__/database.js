@@ -1,4 +1,5 @@
 const DB = {
+  initializeDatabase: jest.fn(),
   addUser: jest.fn(),
   getUser: jest.fn(),
   loginUser: jest.fn(),
@@ -8,6 +9,8 @@ const DB = {
 
 const Role = {
   Diner: 'diner',
+  Admin: 'admin',
+  Franchisee: 'franchisee',
 };
 
 module.exports = { DB, Role };

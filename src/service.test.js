@@ -1,3 +1,7 @@
+jest.mock('/database/database.js');
+
+const { DB } = require('/database/database.js');
+
 const service = require('../src/service');
 
 describe('service module', () => {

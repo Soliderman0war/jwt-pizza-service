@@ -3,7 +3,10 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 
 jest.mock('../database/database.js');
-jest.mock('jsonwebtoken');
+jest.mock('jsonwebtoken', () => ({
+  sign: jest.fn(() => 'mock-token'),
+  verify: jest.fn((payload) => payload),
+}));
 
 const { DB } = require('../database/database.js');
 const { authRouter, setAuthUser, setAuth } = require('../routes/authRouter');
