@@ -9,7 +9,7 @@ jest.mock('jsonwebtoken', () => ({
 }));
 
 const { DB } = require('../database/database.js');
-const { authRouter, setAuthUser, setAuth } = require('../routes/authRouter');
+const { authRouter, setAuthUser} = require('../routes/authRouter');
 
 const app = express();
 app.use(express.json());

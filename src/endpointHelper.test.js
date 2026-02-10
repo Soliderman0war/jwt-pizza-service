@@ -2,7 +2,7 @@ const { asyncHandler } = require('../src/endpointHelper');
 
 describe('asyncHandler', () => {
   test('calls next on success', async () => {
-    const fn = asyncHandler(async (req, res, next) => {
+    const fn = asyncHandler(async (req, res,) => {
       res.send('ok');
     });
 
