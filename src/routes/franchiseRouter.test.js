@@ -5,10 +5,10 @@ const express = require('express');
 jest.mock('../database/database.js', () => ({
   DB: {
     getFranchises: jest.fn().mockResolvedValue([[], false]),
-    getUserFranchises: jest.fn().mockResolvedValue([{ id: 1, name: 'pizzaPocket', admins: [], stores: [] }]),
-    createFranchise: jest.fn().mockResolvedValue({ id: 1, name: 'pizzaPocket', admins: [{ id: 4, email: 'f@jwt.com', name: 'franchisee' }] }),
+    getUserFranchises: jest.fn().mockResolvedValue([{ id: 1, name: 'pizza', admins: [], stores: [] }]),
+    createFranchise: jest.fn().mockResolvedValue({ id: 1, name: 'pizza', admins: [{ id: 4, email: 'p@jwt.com', name: 'franchisee' }] }),
     deleteFranchise: jest.fn().mockResolvedValue(),
-    getFranchise: jest.fn().mockResolvedValue({ id: 1, admins: [{ id: 4, name: 'franchisee', email: 'f@jwt.com' }] }),
+    getFranchise: jest.fn().mockResolvedValue({ id: 1, admins: [{ id: 4, name: 'franchisee', email: 'p@jwt.com' }] }),
     createStore: jest.fn().mockResolvedValue({ id: 1, name: 'SLC', totalRevenue: 0 }),
     deleteStore: jest.fn().mockResolvedValue(),
   },
