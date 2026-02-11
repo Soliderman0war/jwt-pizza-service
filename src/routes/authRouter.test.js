@@ -79,7 +79,7 @@ describe('authRouter', () => {
       id: 1,
       roles: [{ role: 'diner' }],
     });
-
+ 
     const res = await request(app)
       .delete('/api/auth')
       .set('Authorization', 'Bearer mock-token');

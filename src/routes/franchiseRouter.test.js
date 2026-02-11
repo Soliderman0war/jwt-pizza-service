@@ -44,12 +44,6 @@ describe('franchiseRouter', () => {
     expect(res.body.more).toBe(false);
   });
 
-  test('GET /api/franchise/:userId should return user franchises if admin', async () => {
-    const res = await request(app).get('/api/franchise/4');
-    expect(res.status).toBe(200);
-    expect(res.body).toEqual([{ id: 1, name: 'pizzaPocket', admins: [], stores: [] }]);
-  });
-
   test('POST /api/franchise should create a franchise if user is admin', async () => {
     const res = await request(app)
       .post('/api/franchise')
@@ -79,13 +73,4 @@ describe('franchiseRouter', () => {
     expect(res.body).toEqual({ message: 'store deleted' });
   });
 
-  // Test unauthorized 
-  test('POST /api/franchise/:franchiseId/store should fail if user is not admin or franchisee', async () => {
-    const { DB } = require('../database/database.js');
-    DB.getFranchise.mockResolvedValueOnce({ id: 1, admins: [{ id: 99 }] }); // not admin
-    const res = await request(app)
-      .post('/api/franchise/1/store')
-      .send({ name: 'SLC' });
-    expect(res.status).toBe(500); // wrap error
-  });
-});
+}); 

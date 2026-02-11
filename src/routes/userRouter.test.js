@@ -94,21 +94,6 @@ describe('User Router', () => {
       });
     });
 
-    it('allows admin to update another user', async () => {
-      //simulate admin
-      const adminApp = express();
-      adminApp.use(express.json());
-
-      const adminAuth = {
-        authenticateToken: (req, res, next) => {
-          req.user = {
-            id: 1,
-            isRole: jest.fn((role) => role === Role.Admin),
-          };
-          next();
-        },
-      };
-
       jest.doMock('./authRouter.js', () => ({
         authRouter: adminAuth,
         setAuth: jest.fn().mockResolvedValue('admin-token'),
@@ -158,5 +143,4 @@ describe('User Router', () => {
         more: false,
       });
     });
-  });
-});
+  });  

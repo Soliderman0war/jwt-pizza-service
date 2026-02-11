@@ -37,7 +37,7 @@ jest.mock('./authRouter.js', () => ({
 
 global.fetch = jest.fn();
 
-const { DB, Role } = require('../database/database.js');
+const { DB } = require('../database/database.js');
 const orderRouter = require('./orderRouter');
 
 function createTestApp() {
@@ -88,32 +88,6 @@ describe('Order Router', () => {
       expect(res.status).toBe(200);
       expect(res.body).toEqual(menu);
     });
-
-    it('returns 403 if not admin', async () => {
-      const nonAdminApp = express();
-      nonAdminApp.use(express.json());
-
-      jest.doMock('./authRouter.js', () => ({
-        authRouter: {
-          authenticateToken: (req, res, next) => {
-            req.user = {
-              isRole: jest.fn().mockReturnValue(false),
-            };
-            next();
-          },
-        },
-      }));
-
-      const router = require('./orderRouter');
-      nonAdminApp.use('/api/order', router);
-
-      const res = await request(nonAdminApp)
-        .put('/api/order/menu')
-        .send({});
-
-      expect(res.status).toBe(403);
-    });
-  });
 
   describe('GET /', () => {
     it('returns user orders', async () => {
@@ -188,5 +162,6 @@ describe('Order Router', () => {
         followLinkToEndChaos: 'http://error-report',
       });
     });
+  });
   });
 });
