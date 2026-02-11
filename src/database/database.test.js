@@ -12,7 +12,7 @@ jest.mock('../config.js', () => ({
     connection: {
       host: 'localhost',
       user: 'root',
-      password: '',
+      password: 'pass',
       database: 'testdb',
       connectTimeout: 1000,
     },

@@ -26,7 +26,7 @@ jest.mock('./authRouter.js', () => ({
   setAuth: jest.fn(),
 }));
 
-const { DB, Role } = require('../database/database.js');
+const { DB} = require('../database/database.js');
 const { setAuth } = require('./authRouter.js');
 const userRouter = require('./userRouter');
 

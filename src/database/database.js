@@ -6,8 +6,9 @@ const { Role } = require('../model/model.js');
 const dbModel = require('./dbModel.js');
 class DB {
   constructor() {
-    this.initialized = this.initializeDatabase();
-  }
+  this.initialized = Promise.resolve();
+}
+
 
   async getMenu() {
     const connection = await this.getConnection();
@@ -326,35 +327,50 @@ class DB {
     return connection;
   }
 
-  async initializeDatabase() {
-    try {
-      const connection = await this._getConnection(false);
-      try {
-        const dbExists = await this.checkDatabaseExists(connection);
-        console.log(dbExists ? 'Database exists' : 'Database does not exist, creating it');
+async initializeDatabase() {
+  let connection;
 
-        await connection.query(`CREATE DATABASE IF NOT EXISTS ${config.db.connection.database}`);
-        await connection.query(`USE ${config.db.connection.database}`);
+  try {
+    connection = await this._getConnection(false);
 
-        if (!dbExists) {
-          console.log('Successfully created database');
-        }
+    const dbExists = await this.checkDatabaseExists(connection);
+    console.log(dbExists ? 'Database exists' : 'Database does not exist, creating it');
 
-        for (const statement of dbModel.tableCreateStatements) {
-          await connection.query(statement);
-        }
+    await connection.query(`CREATE DATABASE IF NOT EXISTS ${config.db.connection.database}`);
+    await connection.query(`USE ${config.db.connection.database}`);
 
-        if (!dbExists) {
-          const defaultAdmin = { name: '常用名字', email: 'a@jwt.com', password: 'admin', roles: [{ role: Role.Admin }] };
-          this.addUser(defaultAdmin);
-        }
-      } finally {
-        connection.end();
-      }
-    } catch (err) {
-      console.error(JSON.stringify({ message: 'Error initializing database', exception: err.message, connection: config.db.connection }));
+    if (!dbExists) {
+      console.log('Successfully created database');
+    }
+
+    for (const statement of dbModel.tableCreateStatements) {
+      await connection.query(statement);
+    }
+
+    if (!dbExists) {
+      const defaultAdmin = {
+        name: '常用名字',
+        email: 'a@jwt.com',
+        password: 'admin',
+        roles: [{ role: Role.Admin }]
+      };
+
+      await this.addUser(defaultAdmin); // ✅ IMPORTANT: await it
+    }
+
+  } catch (err) {
+    console.error(JSON.stringify({
+      message: 'Error initializing database',
+      exception: err.message,
+      connection: config.db.connection
+    }));
+  } finally {
+    if (connection) {
+      await connection.end(); // ✅ safe now
     }
   }
+}
+
 
   async checkDatabaseExists(connection) {
     const [rows] = await connection.execute(`SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?`, [config.db.connection.database]);
