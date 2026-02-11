@@ -45,14 +45,14 @@ jobs:
               connection: {
                 host: '127.0.0.1',
                 user: 'root',
-                password: 'tempdbpassword',
+                password: 'cYKGIKZp6vD5EJ$#PoVA',
                 database: 'pizza',
                 connectTimeout: 60000,
               },
               listPerPage: 10,
             },
             factory: {
-              url: 'https://pizza.15minutes.click',
+              url: 'https://pizza-factory.cs329.click',
               apiKey: '${{ secrets.FACTORY_API_KEY }}',
             },
           };" > src/config.js
@@ -71,4 +71,4 @@ jobs:
         run: |
           coverage=$(jq '.total.lines.pct' coverage/coverage-summary.json)
           color=$(echo "$coverage < 80" | bc | awk '{if ($1) print "red"; else print "green"}')
-          curl -s -X POST "https://pizza.15minutes.click/api/badge/${{ secrets.NET_ID }}/jwtpizzaservicecoverage?label=Coverage&value=$coverage%25&color=$color" -H "authorization: bearer ${{ secrets.FACTORY_API_KEY }}"
+          curl -s -X POST "https://pizza-factory.cs329.click/api/badge/${{ secrets.NET_ID }}/jwtpizzaservicecoverage?label=Coverage&value=$coverage%25&color=$color" -H "authorization: bearer ${{ secrets.FACTORY_API_KEY }}"

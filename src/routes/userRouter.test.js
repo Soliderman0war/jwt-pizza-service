@@ -94,23 +94,6 @@ describe('User Router', () => {
       });
     });
 
-      jest.doMock('./authRouter.js', () => ({
-        authRouter: adminAuth,
-        setAuth: jest.fn().mockResolvedValue('admin-token'),
-      }));
-
-      const router = require('./userRouter');
-      adminApp.use('/api/user', router);
-
-      DB.updateUser.mockResolvedValue({ id: 2 });
-
-      const res = await request(adminApp)
-        .put('/api/user/2')
-        .send({ name: 'Other' });
-
-      expect(res.status).toBe(200);
-    });
-
     it('returns 403 if not self or admin', async () => {
       const res = await request(app)
         .put('/api/user/2')
@@ -144,3 +127,4 @@ describe('User Router', () => {
       });
     });
   });  
+});
